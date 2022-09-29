@@ -22,7 +22,7 @@ class _MyApp extends State<MyApp> {
   //Ctrl + alt + L : 코드 자동정렬
   @override
   Widget build(BuildContext context) {
-    //생명주기 순서 4번 build()
+    //생명주기 순서 4번 ~ ... build()
     print('build');
     return MaterialApp(
       title: 'Flutter Demo',
