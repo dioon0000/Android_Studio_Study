@@ -38,13 +38,12 @@ class HttpApp extends StatefulWidget {
 
 class _HttpApp extends State<HttpApp> {
   late Future<User> user;
-  TextEditingController? tec;
+  final tec = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    user = getJSONData();
-    tec = new TextEditingController(); // new 로 생성한 텍스트 에디터 컨트롤러
+    //user = getJSONData();
   }
   @override
   Widget build(BuildContext context) {
@@ -68,7 +67,7 @@ class _HttpApp extends State<HttpApp> {
           ),
           ElevatedButton(
             onPressed: (){
-              print(tec?.text);
+              getJSONData();
             },
             child: Icon(Icons.search),
           ),
@@ -96,18 +95,15 @@ class _HttpApp extends State<HttpApp> {
       // ),
     );
   }
-}
 
-Future<User> getJSONData() async{
-  var url = 'https://solved.ac/api/v3/user/show?handle=dioon0000}';
-  var response = await http.get(Uri.parse(url),
-      headers: {"Content-Type": "application/json"});
-
-  if (response.statusCode == 200) {
-    // 만약 서버로의 요청이 성공하면, JSON을 파싱합니다.
-    return User.fromJson(json.decode(response.body));
-  } else {
-    // 만약 요청이 실패하면, 에러를 던집니다.
-    throw Exception('Failed to load post');
+  Future<String> getJSONData() async{
+    var url = 'https://solved.ac/api/v3/user/show?handle=${tec.value.text}';
+    var response = await http.get(Uri.parse(url),
+        headers: {"Content-Type": "application/json"});
+    setState((){
+      var dataConvertedToJSON = User.fromJson(json.decode(response.body));
+      print(dataConvertedToJSON.solvedCount);
+    });
+    return "Successful";
   }
 }
